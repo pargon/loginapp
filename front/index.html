@@ -31,18 +31,18 @@
           <form method="post" id="login_form">
             <div class="form-group mb-3">
               <label>Name:</label>
-              <input type="text" class="form-control" placeholder="Required" name="name" autofocus>
+              <input type="text" class="form-control" placeholder="Required" name="name" autofocus required="required">
             </div>
             <div class="form-group mb-3">
               <label>Last name:</label>
-              <input type="text" class="form-control" placeholder="Required" name="lastname">
+              <input type="text" class="form-control" placeholder="Required" name="lastname" required="required">
             </div>
             <div class="form-group mb-3">
               <label>Email:</label>
-              <input type="email" class="form-control" placeholder="Required" name="email">
+              <input type="email" class="form-control" placeholder="Required" name="email" required="required">
             </div>
             <div class="text-center">
-                <button type="button" class="btn btn-primary" onclick="login_event()">Login</button>
+                <button type="submit" class="btn btn-primary">Login</button>
             </div>
           </form>
         </div>

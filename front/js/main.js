@@ -1,10 +1,16 @@
 
 const url_login = "http://localhost:3000/login";
 
-function login_event() {
+var form = document.getElementById('login_form');
+form.addEventListener('submit', login_event);
+
+function login_event(e) {
+
+  // prevent the browser redirection
+  e.preventDefault();
   
-  var form = document.getElementById('login_form');
   var message = document.getElementById('message');
+  message.textContent = "";
   
   /* Get all inputs from the form */
   var formData = new FormData(form);
@@ -22,7 +28,7 @@ function login_event() {
   .then(data => {
     console.log(data);
     form.reset();
-    message.innerHTML = data.message;
+    message.textContent = data.message;
   });
 
 }
