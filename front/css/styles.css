@@ -3,3 +3,5 @@
     border: solid thin #ddd;
     border-radius: 3px;
 }
+.providers{text-align: center;}
+.providers .btn{min-width: 200px;margin-bottom: 4px;}

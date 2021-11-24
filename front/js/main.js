@@ -1,5 +1,4 @@
-
-const url_login = "http://localhost:3000/login";
+const base_url = "http://localhost:3000"
 
 var form = document.getElementById('login_form');
 form.addEventListener('submit', login_event);
@@ -18,6 +17,8 @@ function login_event(e) {
   /* Convert data into json */
   var data = Object.fromEntries(formData);
 
+  const url_login = `${base_url}/login`;
+
   fetch(url_login, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -31,4 +32,16 @@ function login_event(e) {
     message.textContent = data.message;
   });
 
+}
+
+/* Buttons */
+var buttons = document.querySelectorAll('.providers button');
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', login_provider_event);
+}
+
+function login_provider_event(event) {
+  event.preventDefault();
+  const provider = this.getAttribute("data-provider");
+  window.location.href = `${base_url}/${provider}/auth`;
 }

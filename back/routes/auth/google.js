@@ -29,7 +29,10 @@ router.get('/google/callback', passport.authenticate(strategy_name, {  session:f
     req.user : json
       A json object with the google account data. You can use the req.user._json data.
     req.query.state : string or null
-      The user id that we sent to google to connect our account with the Google account
+      The user id that we sent to google to connect our account with the Google account.
+
+    This route is not an API route, it came from the browser redirection,
+    so it should redirects to some frontend route.
     */
 
     console.log("New request GET to /google/callback");
@@ -46,8 +49,9 @@ router.get('/google/callback', passport.authenticate(strategy_name, {  session:f
       // TODO: If not exists, create the user and create the relation
       //       between user and provider for user_id and provider(google_data)
     }
-    // TODO: Create the relation 
+
     const user = {id: 1, name: "Mauricio"};  // TODO: get the user data for the created or connected user
+
     let data = {
       'success': true,
       'message': `Authentication or connection successfully created for the user ${user_id}`,
