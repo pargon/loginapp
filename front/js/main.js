@@ -45,3 +45,11 @@ function login_provider_event(event) {
   const provider = this.getAttribute("data-provider");
   window.location.href = `${base_url}/${provider}/auth`;
 }
+
+
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+const token = params.token;
+// params.delete("token")
+// TODO: remove token from url
+console.log(params.token);
