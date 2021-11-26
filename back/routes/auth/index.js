@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const google = require('./google');
-// const facebook = require('./facebook');  // You can create new strategies 
+const facebook = require('./facebook');  // You can create new strategies 
 
 router.post('/login', function(req, res) {
 
@@ -23,6 +23,6 @@ router.post('/login', function(req, res) {
 router.get('/failed', (req, res) => res.send('You Failed to log in!'))
 
 router.use('', google);
-// router.use('', facebook);
+router.use('', facebook);
 
 module.exports = router
