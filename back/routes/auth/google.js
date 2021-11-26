@@ -12,7 +12,7 @@ router.get('/google/connect', function (req, res, next) {
 
   console.log("New request GET to /google/connect");
 
-  const user_id = 1;  // get the user id from the token
+  const user_id = 1;  // TODO: get the user id from the token
   const state = `${user_id}`;  // state must be string
 
   // redirect to google to authenticate
@@ -37,7 +37,9 @@ router.get('/google/callback', passport.authenticate(strategy_name, {  session:f
 
     console.log("New request GET to /google/callback");
     const google_data = req.user._json;
+    console.log(req.user);
     const user_id = req.query.state;
+    console.log(`state: ${user_id}`);
 
     if (user_id){
       console.log(`Connect the google account to the user ${user_id}`);
@@ -52,12 +54,19 @@ router.get('/google/callback', passport.authenticate(strategy_name, {  session:f
 
     const user = {id: 1, name: "Mauricio"};  // TODO: get the user data for the created or connected user
 
-    let data = {
-      'success': true,
-      'message': `Authentication or connection successfully created for the user ${user_id}`,
-      'data': user
-    }
-    res.json(data)
+    // TODO: generate a new token for login
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+    const url_front = `http://localhost:5000/?token=${token}`;
+
+    res.redirect(301, url_front);
+
+    // let data = {
+    //   'success': true,
+    //   'message': `Authentication or connection successfully created for the user ${user_id}`,
+    //   'data': user
+    // }
+    // res.json(data)
   }
 );
 
