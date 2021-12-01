@@ -16,7 +16,7 @@ router.get('/facebook/connect', function (req, res, next) {
   const state = `${user_id}`;  // state must be string
 
   // redirect to facebook to authenticate
-  passport.authenticate(strategy_name, { session:false, scope: ['profile', 'email'], state: state })(req, res, next);
+  passport.authenticate(strategy_name, { session:false, scope: ['email'], state: state })(req, res, next);
 
 });
 
@@ -36,8 +36,8 @@ router.get('/facebook/callback', passport.authenticate(strategy_name, {  session
     */
 
     console.log("New request GET to /facebook/callback");
-    console.log(req.user);
     const facebook_data = req.user._json;
+    console.log(facebook_data);
     const user_id = req.query.state;
     console.log(`state: ${user_id}`);
 
