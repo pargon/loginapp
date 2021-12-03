@@ -5,9 +5,9 @@ require('dotenv').config()
 const strategy_name = 'linkedin';
 
 passport.use(strategy_name, new LinkedinStrategy({
-    clientID: process.env.LINKEDING_CLIENT_ID,
-    clientSecret: process.env.LINKEDING_CLIENT_SECRET,
-    callbackURL: process.env.LINKEDING_CALLBACK,
+    clientID: process.env.LINKEDIN_CLIENT_ID,
+    clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+    callbackURL: process.env.LINKEDIN_CALLBACK,
     scope: ['r_emailaddress', 'r_liteprofile']
   },
   function(accessToken, refreshToken, profile, done) {

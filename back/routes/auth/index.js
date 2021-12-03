@@ -3,6 +3,7 @@ const router = express.Router();
 const google = require('./google');
 const facebook = require('./facebook');
 const linkedin = require('./linkedin');
+const github = require('./github');
 
 router.post('/login', function(req, res) {
 
@@ -26,5 +27,6 @@ router.get('/failed', (req, res) => res.send('You Failed to log in!'))
 router.use('', google);
 router.use('', facebook);
 router.use('', linkedin);
+router.use('', github);
 
 module.exports = router
