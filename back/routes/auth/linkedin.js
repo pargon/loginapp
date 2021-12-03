@@ -1,9 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
+const { passport_connect } = require('./utils');
 const strategy_name = 'linkedin';
+const strategy_scope = ['r_liteprofile', 'r_emailaddress']
 
-router.get('/linkedin/auth', passport.authenticate(strategy_name, { session:false, scope: ['r_liteprofile', 'r_emailaddress']}));
+router.get('/linkedin/auth', passport.authenticate(strategy_name, { session:false, scope: strategy_scope}));
 
 router.get('/linkedin/connect', function (req, res, next) {
   /* Connects the current user account with Google. */
@@ -12,12 +14,10 @@ router.get('/linkedin/connect', function (req, res, next) {
 
   console.log("New request GET to /linkedin/connect");
 
-  const user_id = 1;  // TODO: get the user id from the token
-  const state = `${user_id}`;  // state must be string
+  // We supose that the middleware defines the req.user object
+  req.user = {id: 1,}
 
-  // redirect to linkedin to authenticate
-  passport.authenticate(strategy_name, { session:false, scope: ['r_liteprofile', 'r_emailaddress'], state: state })(req, res, next);
-
+  passport_connect(strategy_name, strategy_scope, req, res, next);
 });
 
 router.get('/linkedin/callback', passport.authenticate(strategy_name, {  session:false, failureRedirect: '/failed' }),

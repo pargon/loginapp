@@ -1,9 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
+const { passport_connect } = require('./utils');
 const strategy_name = 'github';
+const strategy_scope = ['user:email', 'read:user'];
 
-router.get('/github/auth', passport.authenticate(strategy_name, { session:false, scope: ['user:email', 'read:user']}));
+router.get('/github/auth', passport.authenticate(strategy_name, { session:false, scope: strategy_scope}));
 
 router.get('/github/connect', function (req, res, next) {
   /* Connects the current user account with Google. */
@@ -12,12 +14,10 @@ router.get('/github/connect', function (req, res, next) {
 
   console.log("New request GET to /github/connect");
 
-  const user_id = 1;  // TODO: get the user id from the token
-  const state = `${user_id}`;  // state must be string
+  // We supose that the middleware defines the req.user object
+  req.user = {id: 1,}
 
-  // redirect to github to authenticate
-  passport.authenticate(strategy_name, { session:false, scope: ['user:email', 'read:user'], state: state })(req, res, next);
-
+  passport_connect(strategy_name, strategy_scope, req, res, next);
 });
 
 router.get('/github/callback', passport.authenticate(strategy_name, {  session:false, failureRedirect: '/failed' }),
