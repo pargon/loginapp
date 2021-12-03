@@ -37,36 +37,16 @@ router.get('/facebook/callback', passport.authenticate(strategy_name, {  session
 
     console.log("New request GET to /facebook/callback");
     const facebook_data = req.user._json;
-    console.log(facebook_data);
     const user_id = req.query.state;
-    console.log(`state: ${user_id}`);
+    const provider_user_id = facebook_data.id;
+    const provider_email = facebook_data.email;
 
-    if (user_id){
-      console.log(`Connect the facebook account to the user ${user_id}`);
-      // TODO: create the relation between user and provider for user_id and provider(facebook_data)
-    }else{
-      console.log(`This is a login event. Check in the database if exists some user with this facebook account.
-        Login if exists, otherwise create a new user and connect with the facebook account`);
-      // TODO: Check if exists a user with this facebook account and log in him.
-      // TODO: If not exists, create the user and create the relation
-      //       between user and provider for user_id and provider(facebook_data)
-    }
+    const token = passport_callback(strategy_name, provider_user_id, provider_email, user_id);
 
-    const user = {id: 1, name: "Mauricio"};  // TODO: get the user data for the created or connected user
-
-    // TODO: generate a new token for login
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
-    const url_front = `http://localhost:5000/?token=${token}`;
+    const url_front = `${process.env.URL_FRONT}/?token=${token}`;
 
     res.redirect(301, url_front);
 
-    // let data = {
-    //   'success': true,
-    //   'message': `Authentication or connection successfully created for the user ${user_id}`,
-    //   'data': user
-    // }
-    // res.json(data)
   }
 );
 

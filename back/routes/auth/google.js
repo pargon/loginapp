@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const { passport_connect } = require('./utils');
+const { passport_connect, passport_callback } = require('./utils');
 const strategy_name = 'google';
 const strategy_scope = ['profile', 'email'];
 
@@ -37,37 +37,18 @@ router.get('/google/callback', passport.authenticate(strategy_name, {  session:f
     */
 
     console.log("New request GET to /google/callback");
+
     const google_data = req.user._json;
-    console.log(req.user);
     const user_id = req.query.state;
-    console.log(`state: ${user_id}`);
+    const provider_user_id = google_data.sub;
+    const provider_email = google_data.email;
 
-    if (user_id){
-      console.log(`Connect the google account to the user ${user_id}`);
-      // TODO: create the relation between user and provider for user_id and provider(google_data)
-    }else{
-      console.log(`This is a login event. Check in the database if exists some user with this google account.
-        Login if exists, otherwise create a new user and connect with the google account`);
-      // TODO: Check if exists a user with this google account and log in him.
-      // TODO: If not exists, create the user and create the relation
-      //       between user and provider for user_id and provider(google_data)
-    }
+    const token = passport_callback(strategy_name, provider_user_id, provider_email, user_id);
 
-    const user = {id: 1, name: "Mauricio"};  // TODO: get the user data for the created or connected user
-
-    // TODO: generate a new token for login
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
-    const url_front = `http://localhost:5000/?token=${token}`;
+    const url_front = `${process.env.URL_FRONT}/?token=${token}`;
 
     res.redirect(301, url_front);
 
-    // let data = {
-    //   'success': true,
-    //   'message': `Authentication or connection successfully created for the user ${user_id}`,
-    //   'data': user
-    // }
-    // res.json(data)
   }
 );
 
