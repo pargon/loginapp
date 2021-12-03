@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const strategy_name = 'github';
 
-router.get('/github/auth', passport.authenticate(strategy_name, { session:false, scope: [ 'user:email', 'read:user' ]}));
+router.get('/github/auth', passport.authenticate(strategy_name, { session:false, scope: ['user:email', 'read:user']}));
 
 router.get('/github/connect', function (req, res, next) {
   /* Connects the current user account with Google. */
@@ -16,7 +16,7 @@ router.get('/github/connect', function (req, res, next) {
   const state = `${user_id}`;  // state must be string
 
   // redirect to github to authenticate
-  passport.authenticate(strategy_name, { session:false, scope: [ 'user:email' ], state: state })(req, res, next);
+  passport.authenticate(strategy_name, { session:false, scope: ['user:email', 'read:user'], state: state })(req, res, next);
 
 });
 
