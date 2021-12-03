@@ -2,8 +2,22 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const strategy_name = 'google';
+const strategy_scope = ['profile', 'email'];
 
-router.get('/google/auth', passport.authenticate(strategy_name, { session:false, scope: ['profile', 'email']}));
+router.get('/google/auth', passport.authenticate(strategy_name, { session:false, scope: strategy_scope}));
+
+function passport_connect(strategy_name, strategy_scope, req, res, next) {
+
+  const user_id = req.user.id;
+  const state = `${user_id}`;  // state must be string
+
+  // redirect to strategy to authenticate
+  let passport_authenticate = passport.authenticate(
+    strategy_name, { session:false, scope: strategy_scope, state: state }
+  );
+  passport_authenticate(req, res, next);
+}
+
 
 router.get('/google/connect', function (req, res, next) {
   /* Connects the current user account with Google. */
@@ -12,11 +26,10 @@ router.get('/google/connect', function (req, res, next) {
 
   console.log("New request GET to /google/connect");
 
-  const user_id = 1;  // TODO: get the user id from the token
-  const state = `${user_id}`;  // state must be string
+  // We supose that the middleware defines the req.user object
+  req.user = {id: 1,}
 
-  // redirect to google to authenticate
-  passport.authenticate(strategy_name, { session:false, scope: ['profile', 'email'], state: state })(req, res, next);
+  passport_connect(strategy_name, strategy_scope, req, res, next);
 
 });
 
