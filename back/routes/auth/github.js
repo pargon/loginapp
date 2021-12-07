@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const { passport_connect } = require('./utils');
+const { passport_connect, passport_callback } = require('./utils');
 const strategy_name = 'github';
 const strategy_scope = ['user:email', 'read:user'];
 
